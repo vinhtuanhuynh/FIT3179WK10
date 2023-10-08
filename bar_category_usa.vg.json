@@ -1,0 +1,130 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 650,
+    "height": 250,
+    "data": {
+        "url": "./youtube.csv"
+    },
+    "params": [
+        {
+            "name": "data_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "Show All",
+                    "Show Channels Distribution",
+                    "Show Subscribers Distribution"
+                ],
+                "labels": [
+                    "Show All",
+                    "Show Channel Distribution",
+                    "Show Subscribers Distribution"
+                ],
+                "name": "Data Selection: "
+            }
+        }
+    ],
+    "transform": [
+        {
+            "filter": "datum.Country === 'United States of America'"
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "count",
+                    "as": "channel_count"
+                },
+                {
+                    "op": "sum",
+                    "field": "subscribers",
+                    "as": "total_subscribers"
+                }
+            ],
+            "groupby": [
+                "category"
+            ]
+        },
+        {
+            "calculate": "datum.channel_count / 313 * 100",
+            "as": "Channels"
+        },
+        {
+            "calculate": "datum.total_subscribers / 7329500000 * 100",
+            "as": "Subscribers"
+        }
+    ],
+    "encoding": {
+        "x": {
+            "field": "category",
+            "type": "nominal",
+            "title": "Category"
+        },
+        "color": {
+            "legend": {
+                "orient": "none",
+                "legendX": 570,
+                "legendY": 10
+            },
+            "scale": {
+                "range": ["rgb(230,0,0)", "rgb(60,60,60)"]
+            }
+        }
+    },
+    "layer": [
+        {
+            "mark": {
+                "type": "bar",
+                "xOffset": -6,
+                "size": 17
+            },
+            "encoding": {
+                "y": {
+                    "field": "Channels",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": null,
+                        "ticks": false
+                    }
+                },
+                "opacity": {
+                    "condition": {
+                        "test": "data_selection == 'Show Subscribers Distribution'",
+                        "value": 0
+                    },
+                    "value": 1
+                },
+                "color": {
+                    "datum": "Channels"
+                }
+            }
+        },
+        {
+            "mark": {
+                "type": "bar",
+                "size": 18,
+                "xOffset": 13
+            },
+            "encoding": {
+                "y": {
+                    "field": "Subscribers",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": null,
+                        "ticks": false
+                    }
+                },
+                "opacity": {
+                    "condition": {
+                        "test": "data_selection == 'Show Channels Distribution'",
+                        "value": 0
+                    },
+                    "value": 1
+                },
+                "color": {
+                    "datum": "Subscribers"
+                }
+            }
+        }
+    ],
+    "title": "Channels vs Subscribers Distribution by Category in America (Total: 313)"
+}

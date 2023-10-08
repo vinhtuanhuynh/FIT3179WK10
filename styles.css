@@ -1,0 +1,39 @@
+body * {
+  font-family: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-weight: 900;
+}
+
+.title {
+  text-align: center;
+}
+
+body {
+  background-color:white;
+}
+
+.page {
+  width: 1170px;
+  background-color: white;
+  margin: auto; /* horizontally move the div to the center */
+  padding: 40px;
+}
+
+.vis-container {
+  max-width: fit-content;
+  justify-content: center;
+}
+
+.pure-g {
+  margin-bottom: 40px;
+}
+
+.small-font {
+  font-size: 14px;
+}
+
+.description {
+  text-align: justify;
+}
